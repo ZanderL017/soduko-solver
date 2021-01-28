@@ -61,6 +61,13 @@ class SodukoBoard:
                 return False
         return True
 
+    def is_solved(self):
+        for i in range(self.num_rows):
+            for j in range(self.num_cols):
+                if not self.is_valid_move((i, j), self.board[i][j]):
+                    return False
+        return True
+
     def get_square(self, index):
         return self.board[index // self.num_cols][index % self.num_rows]
     
