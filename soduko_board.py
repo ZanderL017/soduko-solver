@@ -1,19 +1,11 @@
-
-
 class SodukoBoard:
 
-    def __init__(self):
+    def __init__(self, board):
         self.empty_square = 0
         self.num_rows = 9
         self.num_cols = 9
         self.box_size = 3
-        self.board = []
-        # Create an empty board
-        for i in range(self.num_rows):
-            row = []
-            for j in range(self.num_cols):
-                row.append(empty_square)
-            self.board.append(row)
+        self.board = board
         
     def load_board(self, board):
         """Loads a pre-made soduko board and
@@ -33,7 +25,8 @@ class SodukoBoard:
     def is_valid_move(self, coordinates, value):
         assert type(coordinates) is tuple, "Coordinates must be a tuple"
         assert value != 0  and value <= self.num_rows, "Invalid square value; must be [1, 9]"
-        if is_box_valid and 
+
+        return self.is_box_valid(coordinates, value) and self.is_row_valid(coordinates, value) and self.is_column_valid(coordinates, value)
 
     def is_box_valid(self, coordinates, value):
         """
@@ -42,8 +35,8 @@ class SodukoBoard:
         start_coordinates = (coordinates[0] - coordinates[0] % self.box_size,
                             coordinates[1] - coordinates[1] % self.box_size)
         for i in range(self.box_size):
-            for j in rage(self.box_size):
-                square = self.board[start_coordinates + i][start_coordinates + j]
+            for j in range(self.box_size):
+                square = self.board[start_coordinates[0] + i][start_coordinates[1] + j]
                 if square == value:
                     return False
         return True
@@ -58,7 +51,7 @@ class SodukoBoard:
                 return False
         return True
     
-    def is_row_valid(self, coordinates, value):
+    def is_column_valid(self, coordinates, value):
         """
         Assumes coordinates and value are valid.
         """
@@ -68,6 +61,11 @@ class SodukoBoard:
                 return False
         return True
 
+    def get_square(self, index):
+        return self.board[index // self.num_cols][index % self.num_rows]
+    
+    def set_square(self, index, value):
+        self.board[index // self.num_cols][index % self.num_rows] = value
 
-    def position_to_coordinates(self, position):
-        
+    def index_to_coordinates(self, index):
+        return (index // self.num_cols, index % self.num_rows)
